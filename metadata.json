@@ -1,0 +1,5 @@
+{
+  "name": "Tetrahedron Geometry Lab",
+  "description": "A 3D interactive laboratory for exploring regular tetrahedron geometry, specifically solving for vertex heights based on edge length and base heights.",
+  "requestFramePermissions": []
+}
