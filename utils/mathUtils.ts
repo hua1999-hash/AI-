@@ -1,3 +1,4 @@
+
 /**
  * Safely parses a math string like "5*sqrt(2)"
  */
@@ -59,6 +60,7 @@ const generateLatex = (S1: number, deltaVal: number): { min: string; max: string
   }
 
   const s1Fixed = parseFloat(S1.toFixed(2));
+  // The formula is (S1 +/- sqrt(delta/4)) / 3
   const nMin = `${s1Fixed} - ${sqrtPart}`;
   const nMax = `${s1Fixed} + ${sqrtPart}`;
   
@@ -81,9 +83,10 @@ export const solveTetrahedron = (
   const S2 = hB * hB + hC * hC + hD * hD;
   const S_cross = hB * hC + hC * hD + hD * hB;
 
+  // Formula derivation: 3*hA^2 - 2*S1*hA + (3*S2 - 2*S_cross - 2*L^2) = 0
   const a = 3;
   const b = -2 * S1;
-  const c = S2 - 2 * S_cross + L * L;
+  const c = 3 * S2 - 2 * S_cross - 2 * L * L;
   const delta = b * b - 4 * a * c;
 
   if (delta < 0 || isNaN(delta)) {
@@ -99,7 +102,9 @@ export const solveTetrahedron = (
   const r1 = (-b - Math.sqrt(delta)) / (2 * a);
   const r2 = (-b + Math.sqrt(delta)) / (2 * a);
   
-  const latex = generateLatex(S1, delta);
+  // We pass delta / 4 to generateLatex because the formula simplifies to:
+  // hA = (S1 +/- sqrt(delta/4)) / 3
+  const latex = generateLatex(S1, delta / 4);
 
   return {
     hasSolution: true,
